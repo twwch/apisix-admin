@@ -1,0 +1,17 @@
+http_listen = ":9002"
+
+[log]
+    path = "D:\\var\\log\\gin-sdk"
+    api = "apisix-admin-api.log"
+    panic = "apisix-admin-panic.log"
+    debug = "apisix-admin-debug.log"
+    fatal = "apisix-admin-fatal.log"
+    warn = "apisix-admin-warn.log"
+    error = "apisix-admin-error.log"
+
+apisix_host = "http://127.0.0.1:9080"
+apisix_key = "edd1c9f034335f136f87ad84b625c8f112"
+
+[mongo_conf]
+    default = "mongodb://127.0.0.1:27017/?connect=direct"
+
