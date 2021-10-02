@@ -35,7 +35,7 @@ func (upstream *Upstream) Create(ctx context.Context, req *pb.CreateUpstreamReq)
 	return
 }
 
-func (upstream *Upstream) Detele(ctx context.Context, id string) (resp *pb.DeleteResp, err error) {
+func (upstream *Upstream) Delete(ctx context.Context, id string) (resp *pb.DeleteResp, err error) {
 	path := fmt.Sprintf("/apisix/admin/upstreams/%s", id)
 	err = upstream.client.Delete(ctx, path, nil, &resp)
 	return

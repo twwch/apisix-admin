@@ -12,7 +12,7 @@ type repoMongo struct {
 // NewRepoMongo NewRepo creates a new repository.
 func NewRepoMongo() *repoMongo {
 	return &repoMongo{
-		base.NewMongoBase(config.Get().MongoConf["default"], "sso", "user").SetSoftDelete(false),
+		base.NewMongoBase(config.Get().MongoConf["default"], "eff-publish", "user").SetSoftDelete(false),
 	}
 }
 

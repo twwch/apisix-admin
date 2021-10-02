@@ -5,7 +5,9 @@ import (
 	"apisix-admin/hander/apisix"
 	"apisix-admin/hander/organization"
 	"apisix-admin/hander/test"
+	"apisix-admin/middleware/jwt"
 	"context"
+	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 	"github.com/twwch/gin-sdk/handler"
 	"github.com/twwch/gin-sdk/server"
@@ -41,7 +43,9 @@ func newRouter(address string) server.Server {
 	})
 
 	router := httpServer.GetEngine()
+
 	v1 := router.Group("/apisix_admin/v1")
+	v1.Use(CORSMiddleware(), jwt.JwtMiddleware())
 	{
 		for _, hd := range httphandlers {
 			hd.Init(v1)
@@ -49,4 +53,20 @@ func newRouter(address string) server.Server {
 	}
 	log.Info(httpServer.Run(ctx))
 	return httpServer
+}
+
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
 }

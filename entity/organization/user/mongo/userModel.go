@@ -1,4 +1,4 @@
-package user
+package mongo
 
 type User struct {
 	Name   string `json:"name" bson:"name"`

@@ -12,12 +12,14 @@ message RouteValue {
   int64 update_time = 4;
   string uri = 5;
   repeated string uris = 6;
+  string  upstream_id = 7;
+  string desc = 8;
+  repeated string hosts = 9;
 }
 
 message RouteNodes {
   string key = 1;
   RouteValue value = 2;
-  string  upstream_id = 3;
 }
 
 message RouteNode {

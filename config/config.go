@@ -8,10 +8,11 @@ import (
 
 type Config struct {
 	HttpListen string            `mapstructure:"http_listen"`
-	Log        *twlog.LogConf    `mapstructure:"log"`
 	ApisixHost string            `mapstructure:"apisix_host"`
 	ApisixKey  string            `mapstructure:"apisix_key"`
+	DesKey     string            `mapstructure:"des_key"`
 	MongoConf  map[string]string `mapstructure:"mongo_conf"`
+	Log        *twlog.LogConf    `mapstructure:"log"`
 }
 
 var _globalConfig = new(Config)

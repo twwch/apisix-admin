@@ -31,13 +31,13 @@ func TestRoute_CreateRoute(t *testing.T) {
 	Init()
 	ctx := context.Background()
 	req := &pb.CreateRouteReq{
-		Id:          "2003",
+		Id:          "2006",
 		Name:        "测试wqwqw",
 		Desc:        "测试wqwqw",
-		Uris:        []string{"/XXX", "/yyy"},
-		Hosts:       []string{"foo.com", "*.bar.com"},
+		Uris:        []string{"/api/v1", "/test"},
+		Hosts:       []string{"customer.chtw.com", "*.bar.com"},
 		RemoteAddrs: []string{"127.0.0.0", "192.168.26.25"},
-		UpstreamId:  "1",
+		UpstreamId:  "4",
 	}
 	resp, err := GetApiSixClient().GetRoute().Create(ctx, req)
 	if err != nil {

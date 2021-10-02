@@ -2,8 +2,9 @@ package organization
 
 import (
 	"apisix-admin/application/organization"
-	userEntity "apisix-admin/entity/user"
-	"apisix-admin/proto/apisix/pb"
+	"apisix-admin/entity/common"
+	"apisix-admin/entity/organization/user"
+	"apisix-admin/entity/organization/user/mongo"
 	"context"
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
@@ -26,12 +27,22 @@ func (h *OrganizationHanlder) Init(ginRouter *gin.RouterGroup) {
 
 		// 用户相关
 		userGroup := appGroup.Group("/user")
-		server.Route(userGroup, http.MethodGet, "/login", h.LoginHandler)
+		server.Route(userGroup, http.MethodPost, "/login", h.LoginHandler)
+		server.Route(userGroup, http.MethodGet, "/info", h.InfoHandler)
+
 	}
 }
 
-func (h *OrganizationHanlder) LoginHandler(ctx context.Context, req *pb.ListReq) (resp *userEntity.User, err error) {
+func (h *OrganizationHanlder) LoginHandler(ctx context.Context, req *user.LoginReq) (resp *user.LoginResp, err error) {
 	resp, err = h.OrganizationApplication.Login(ctx, req)
+	if err != nil{
+		h.Logger.Error(err)
+	}
+	return
+}
+
+func (h *OrganizationHanlder) InfoHandler(ctx context.Context, req *common.Empty) (resp *mongo.User, err error)  {
+	resp, err = h.OrganizationApplication.Info(ctx)
 	if err != nil{
 		h.Logger.Error(err)
 	}

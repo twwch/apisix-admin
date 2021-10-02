@@ -1,6 +1,9 @@
 package apisix
 
 import (
+	"apisix-admin/application/apisix"
+	"apisix-admin/entity/apisix/route"
+	"apisix-admin/entity/common"
 	"apisix-admin/proto/apisix/pb"
 	"context"
 	"github.com/gin-gonic/gin"
@@ -12,6 +15,7 @@ import (
 
 type ApisixHanlder struct {
 	handler.Base
+	*apisix.ApisixApplication
 }
 
 func (h *ApisixHanlder) Init(ginRouter *gin.RouterGroup) {
@@ -22,11 +26,36 @@ func (h *ApisixHanlder) Init(ginRouter *gin.RouterGroup) {
 
 		// 路由相关
 		routeGroup := appGroup.Group("/route")
-		server.Route(routeGroup, http.MethodGet, "/get", h.ListRouter)
+		server.Route(routeGroup, http.MethodGet, "/get", h.ListRoute)
+		// 删除路由规则后， 服务无法访问， 谨慎操作
+		//server.Route(routeGroup, http.MethodGet, "/delete", h.DeleteRoute)
 		//appGroup.GET("/", warper.CreateHandlerFunc(h.Test, false))
 	}
 }
 
-func (h *ApisixHanlder) ListRouter(ctx context.Context, req *pb.ListReq) (resp *pb.ListRouteResp, err error) {
+func (h *ApisixHanlder) ListRoute(ctx context.Context, req *pb.ListReq) (resp *route.ListRoutes, err error) {
+	// apisix 分页无效，这个参数可以改为空
+	if req.Page <= 0 {
+		req.Page = 1
+	}
+	if req.Size <= 0 {
+		req.Size = 20
+	}
+	resp, err = h.ApisixApplication.ListRoute(ctx, req)
+	if err != nil {
+		h.Logger.Error(err)
+	}
+	return
+}
+
+func (h *ApisixHanlder) DeleteRoute(ctx context.Context, req *route.DeleteRouteReq) (resp *common.Empty, err error)  {
+	if req.RouteId == ""{
+		err = common.ParamsError
+		return
+	}
+	err = h.ApisixApplication.DeleteRoute(ctx, req.RouteId, req.UpstreamId)
+	if err != nil {
+		h.Logger.Error(err)
+	}
 	return
 }

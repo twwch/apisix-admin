@@ -26,7 +26,7 @@ func TestUpstream_Create(t *testing.T) {
 		Desc:"cesi",
 		Nodes: map[string]int32{"127.0.0.1:80":1},
 		Type: pb.UpstreamRoundrobinType,
-		Id: "12",
+		Id: "4",
 	})
 	if err != nil {
 		log.Fatal(err)
@@ -37,7 +37,7 @@ func TestUpstream_Create(t *testing.T) {
 func TestUpstream_Detele(t *testing.T) {
 	Init()
 	ctx := context.Background()
-	resp, err := GetApiSixClient().GetUpstream().Detele(ctx,  "12")
+	resp, err := GetApiSixClient().GetUpstream().Delete(ctx,  "1")
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/containerd/containerd v1.5.5 // indirect
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/docker/docker v20.10.8+incompatible
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/fatih/gomodifytags v1.16.0 // indirect
