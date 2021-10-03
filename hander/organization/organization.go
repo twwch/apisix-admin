@@ -45,6 +45,7 @@ func (h *OrganizationHanlder) InfoHandler(ctx context.Context, req *common.Empty
 	resp, err = h.OrganizationApplication.Info(ctx)
 	if err != nil{
 		h.Logger.Error(err)
+		err = common.SystemError
 	}
 	return
 }

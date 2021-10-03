@@ -15,6 +15,7 @@ message RouteValue {
   string  upstream_id = 7;
   string desc = 8;
   repeated string hosts = 9;
+  repeated string methods = 10;
 }
 
 message RouteNodes {
@@ -71,7 +72,9 @@ message UpstreamValue{
   map<string, int32> nodes = 5;
   string id = 6;
   int64 create_time = 7;
-  string hash_no = 8;
+  string hash_on = 8;
+  string desc = 9;
+  string name = 10;
 }
 
 message UpstreamNodes{
@@ -96,12 +99,11 @@ message ListUpstreamResp {
 }
 
 message CreateUpstreamReq {
-  string string = 1;
+  string id = 1;
   map<string, int32> nodes = 2;
   string name = 3;
   string desc = 4;
-  string id = 5;
-  string type = 6;
+  string type = 5;
 }
 
 message CreateUpstreamResp{

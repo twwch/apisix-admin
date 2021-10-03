@@ -3,6 +3,8 @@ package apisix
 import (
 	"apisix-admin/application/apisix"
 	"apisix-admin/entity/apisix/route"
+	apisixEntity "apisix-admin/entity/apisix/route"
+	"apisix-admin/entity/apisix/upstream"
 	"apisix-admin/entity/common"
 	"apisix-admin/proto/apisix/pb"
 	"context"
@@ -27,8 +29,13 @@ func (h *ApisixHanlder) Init(ginRouter *gin.RouterGroup) {
 		// 路由相关
 		routeGroup := appGroup.Group("/route")
 		server.Route(routeGroup, http.MethodGet, "/get", h.ListRoute)
+		server.Route(routeGroup, http.MethodPost, "/create", h.CreateRoute)
 		// 删除路由规则后， 服务无法访问， 谨慎操作
 		//server.Route(routeGroup, http.MethodGet, "/delete", h.DeleteRoute)
+
+		// Upstream相关
+		UpstreamGroup := appGroup.Group("/upstream")
+		server.Route(UpstreamGroup, http.MethodGet, "/get", h.ListUpstream)
 		//appGroup.GET("/", warper.CreateHandlerFunc(h.Test, false))
 	}
 }
@@ -48,12 +55,32 @@ func (h *ApisixHanlder) ListRoute(ctx context.Context, req *pb.ListReq) (resp *r
 	return
 }
 
-func (h *ApisixHanlder) DeleteRoute(ctx context.Context, req *route.DeleteRouteReq) (resp *common.Empty, err error)  {
-	if req.RouteId == ""{
+func (h *ApisixHanlder) CreateRoute(ctx context.Context, req *apisixEntity.CreateRouteReq) (resp *common.Empty, err error) {
+	if req.Upstream == nil || req.Route == nil{
+		err = common.ParamsError
+		return
+	}
+	resp, err = h.ApisixApplication.CreateRoute(ctx, req)
+	if err != nil {
+		h.Logger.Error(err)
+	}
+	return
+}
+
+func (h *ApisixHanlder) DeleteRoute(ctx context.Context, req *route.DeleteRouteReq) (resp *common.Empty, err error) {
+	if req.RouteId == "" {
 		err = common.ParamsError
 		return
 	}
 	err = h.ApisixApplication.DeleteRoute(ctx, req.RouteId, req.UpstreamId)
+	if err != nil {
+		h.Logger.Error(err)
+	}
+	return
+}
+
+func (h *ApisixHanlder) ListUpstream(ctx context.Context, req *pb.ListReq) (resp *upstream.ListUpstreamResp, err error) {
+	resp, err = h.ApisixApplication.ListUpstream(ctx, req)
 	if err != nil {
 		h.Logger.Error(err)
 	}

@@ -24,7 +24,7 @@ func TestUpstream_Create(t *testing.T) {
 	resp, err := GetApiSixClient().GetUpstream().Create(ctx, &pb.CreateUpstreamReq{
 		Name:"测试",
 		Desc:"cesi",
-		Nodes: map[string]int32{"127.0.0.1:80":1},
+		Nodes: map[string]int32{"127.0.0.1:80":1, "127.0.0.1:81":1},
 		Type: pb.UpstreamRoundrobinType,
 		Id: "4",
 	})

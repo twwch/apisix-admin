@@ -11,3 +11,8 @@ type DeleteRouteReq struct {
 	RouteId    string `json:"route_id" form:"route_id"`
 	UpstreamId string `json:"upstream_id" form:"upstream_id"`
 }
+
+type CreateRouteReq struct {
+	Route    *pb.CreateRouteReq    `json:"route" banding:"require"`
+	Upstream *pb.CreateUpstreamReq `json:"upstream" banding:"require"`
+}

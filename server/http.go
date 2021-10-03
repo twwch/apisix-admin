@@ -43,7 +43,6 @@ func newRouter(address string) server.Server {
 	})
 
 	router := httpServer.GetEngine()
-
 	v1 := router.Group("/apisix_admin/v1")
 	v1.Use(CORSMiddleware(), jwt.JwtMiddleware())
 	{

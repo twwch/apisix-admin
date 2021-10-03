@@ -10,9 +10,13 @@ type Upstream struct {
 	apisixClient
 }
 
-func (upstream *Upstream) List(ctx context.Context, page, size int) (resp *pb.ListUpstreamResp, err error) {
+func (upstream *Upstream) List(ctx context.Context, page, size int32) (resp *pb.ListUpstreamResp, err error) {
 	path := fmt.Sprintf("/apisix/admin/upstreams?page=%d&&size=%d", page, size)
 	err = upstream.client.Get(ctx, path, nil, &resp)
+	// 这是一个坑，当没有路由存在的时候，接口返回的{}， 有数据的时候返回的是数组
+	/*if err != nil && strings.Contains(err.Error(), "cannot unmarshal object into Go struct field"){
+		err = nil
+	}*/
 	return
 }
 

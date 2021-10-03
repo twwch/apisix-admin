@@ -9,7 +9,7 @@ import (
 )
 
 func Init() {
-	host := "http://192.168.209.156:9080"
+	host := "http://192.168.209.157:9080"
 	key := "edd1c9f034335f136f87ad84b625c8f112"
 	err := NewApiSixClient(host, key)
 	if err != nil {
@@ -31,7 +31,7 @@ func TestRoute_CreateRoute(t *testing.T) {
 	Init()
 	ctx := context.Background()
 	req := &pb.CreateRouteReq{
-		Id:          "2006",
+		Id:          "9999",
 		Name:        "测试wqwqw",
 		Desc:        "测试wqwqw",
 		Uris:        []string{"/api/v1", "/test"},
