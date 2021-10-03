@@ -16,6 +16,9 @@ func TestUpstream_List(t *testing.T) {
 		log.Fatal(err)
 	}
 	fmt.Println(resp.Action, resp.Count, resp.Node )
+	for _, item := range resp.Node.Nodes{
+		GetApiSixClient().GetUpstream().Delete(ctx, item.Value.Id)
+	}
 }
 
 func TestUpstream_Create(t *testing.T) {
@@ -37,7 +40,7 @@ func TestUpstream_Create(t *testing.T) {
 func TestUpstream_Detele(t *testing.T) {
 	Init()
 	ctx := context.Background()
-	resp, err := GetApiSixClient().GetUpstream().Delete(ctx,  "1")
+	resp, err := GetApiSixClient().GetUpstream().Delete(ctx,  "1633250139")
 	if err != nil {
 		log.Fatal(err)
 	}

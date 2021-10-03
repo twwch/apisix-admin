@@ -25,6 +25,9 @@ func TestApisixClient_ListRoute(t *testing.T) {
 		log.Fatal(err)
 	}
 	fmt.Println(resp.Node, resp.Count)
+	for _, item := range resp.Node.Nodes{
+		GetApiSixClient().GetRoute().Delete(ctx, item.Value.Id)
+	}
 }
 
 func TestRoute_CreateRoute(t *testing.T) {
@@ -49,7 +52,7 @@ func TestRoute_CreateRoute(t *testing.T) {
 func TestRoute_DeleteRoute(t *testing.T) {
 	Init()
 	ctx := context.Background()
-	resp, err := GetApiSixClient().GetRoute().Delete(ctx, "2003")
+	resp, err := GetApiSixClient().GetRoute().Delete(ctx, "1633250139")
 	if err != nil {
 		log.Fatal(err)
 	}

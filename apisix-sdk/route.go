@@ -22,6 +22,17 @@ func (apisix *Route) List(ctx context.Context, page, size int32) (resp *pb.ListR
 	return
 }
 
+func (apisix *Route) Get(ctx context.Context, id string) (resp *pb.GetRouteResp, err error) {
+	// apisix 分页无效，page， size 参数可以改为空
+	path := fmt.Sprintf("/apisix/admin/routes/%s", id)
+	err = apisix.client.Get(ctx, path, nil, &resp)
+	// 这是一个坑，当没有路由存在的时候，接口返回的{}， 有数据的时候返回的是数组
+	if err != nil && strings.Contains(err.Error(), "cannot unmarshal object into Go struct field RouteNode.node.nodes"){
+		err = nil
+	}
+	return
+}
+
 func (apisix *Route) Create(ctx context.Context, req *pb.CreateRouteReq) (resp *pb.CreateRouteResp, err error) {
 	if req.GetUri() != "" && len(req.GetUris()) > 0 {
 		err = URIORURLSChooseOneError

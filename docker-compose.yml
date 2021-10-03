@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  apisix_admin:
+    # image: xxx
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: apisix_admin
+    restart: "always"
+    volumes:
+      - /var/log/apisix-admin/:/var/log/apisix-admin/
+      - ./config/apisix-admin.toml:/app/config/apisix-admin.toml
+      - ./apisix-admin:/app/apisix-admin
+      - /etc/hosts:/etc/hosts
+      - /etc/localtime:/etc/localtime
+    networks:
+      - net
+    ports:
+      - 9101:9001
+    privileged: true
+    user: root
+
+networks:
+  net:
+    external: false
+

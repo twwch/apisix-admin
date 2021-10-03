@@ -28,6 +28,9 @@ func (app *ApisixApplication) ListRoute(ctx context.Context, req *pb.ListReq) (r
 
 func (app *ApisixApplication) CreateRoute(ctx context.Context, req *apisixEntity.CreateRouteReq) (resp *common.Empty, err error) {
 	id := fmt.Sprint(time.Now().Unix())
+	if req.Id != ""{
+		id = req.Id
+	}
 	req.Upstream.Id = id
 	req.Upstream.Type = pb.UpstreamRoundrobinType
 	_, err = apisix_sdk.GetApiSixClient().GetUpstream().Create(ctx, req.Upstream)
@@ -37,6 +40,46 @@ func (app *ApisixApplication) CreateRoute(ctx context.Context, req *apisixEntity
 	req.Route.Id = id
 	req.Route.UpstreamId = id
 	_, err = apisix_sdk.GetApiSixClient().GetRoute().Create(ctx, req.Route)
+	return
+}
+
+func (app *ApisixApplication) GetRoute(ctx context.Context, req *apisixEntity.GetRouteReq) (resp *apisixEntity.GetRouteResp, err error) {
+	routes, err := apisix_sdk.GetApiSixClient().GetRoute().Get(ctx, req.Id)
+	if err != nil {
+		return
+	}
+	upstreams, err := apisix_sdk.GetApiSixClient().GetUpstream().Get(ctx, req.Id)
+	if err != nil {
+		return
+	}
+	resp = new(apisixEntity.GetRouteResp)
+	routeItem := routes.Node.Value
+	resp.Route = &pb.CreateRouteReq{
+		Id:          routeItem.Id,
+		Uris:        routeItem.Uris,
+		Uri:         routeItem.Uri,
+		Hosts:       routeItem.Hosts,
+		Desc:        routeItem.Desc,
+		RemoteAddrs: routeItem.RemoteAddrs,
+		UpstreamId:  routeItem.UpstreamId,
+		Methods:     routeItem.Methods,
+	}
+	upstreamItem := upstreams.Node.Value
+	resp.Upstream = &pb.CreateUpstreamReq{
+		Id: upstreamItem.Id,
+		Nodes: upstreamItem.Nodes,
+		Name: upstreamItem.Name,
+		Desc: upstreamItem.Desc,
+		Type: upstreamItem.Type,
+	}
+	nodes := make([]*apisixEntity.Nodes, 0)
+	for key, item := range upstreams.Node.Value.Nodes {
+		nodes = append(nodes, &apisixEntity.Nodes{
+			NodeKey:   key,
+			NodeValue: item,
+		})
+	}
+	resp.Nodes = nodes
 	return
 }
 

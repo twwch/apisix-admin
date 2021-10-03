@@ -4,6 +4,7 @@ import (
 	"apisix-admin/proto/apisix/pb"
 	"context"
 	"fmt"
+	"strings"
 )
 
 type Upstream struct {
@@ -14,9 +15,20 @@ func (upstream *Upstream) List(ctx context.Context, page, size int32) (resp *pb.
 	path := fmt.Sprintf("/apisix/admin/upstreams?page=%d&&size=%d", page, size)
 	err = upstream.client.Get(ctx, path, nil, &resp)
 	// 这是一个坑，当没有路由存在的时候，接口返回的{}， 有数据的时候返回的是数组
-	/*if err != nil && strings.Contains(err.Error(), "cannot unmarshal object into Go struct field"){
+	if err != nil && strings.Contains(err.Error(), "json: cannot unmarshal object into Go struct field UpstreamNode.node.nodes of type []*pb.UpstreamNodes"){
 		err = nil
-	}*/
+	}
+	return
+}
+
+func (apisix *Upstream) Get(ctx context.Context, id string) (resp *pb.GetUpstreamResp, err error) {
+	// apisix 分页无效，page， size 参数可以改为空
+	path := fmt.Sprintf("/apisix/admin/upstreams/%s", id)
+	err = apisix.client.Get(ctx, path, nil, &resp)
+	// 这是一个坑，当没有路由存在的时候，接口返回的{}， 有数据的时候返回的是数组
+	if err != nil && strings.Contains(err.Error(), "json: cannot unmarshal object into Go struct field UpstreamNode.node.nodes of type []*pb.UpstreamNodes"){
+		err = nil
+	}
 	return
 }
 
