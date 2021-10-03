@@ -1,12 +1,12 @@
 version: '3'
 
 services:
-  apisix_admin:
+  apisix-admin:
     # image: xxx
     build:
       context: ./
       dockerfile: Dockerfile
-    container_name: apisix_admin
+    container_name: apisix-admin
     restart: "always"
     volumes:
       - /var/log/apisix-admin/:/var/log/apisix-admin/
