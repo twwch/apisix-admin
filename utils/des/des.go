@@ -2,14 +2,13 @@ package des
 
 import (
 	"apisix-admin/config"
-	entityUser "apisix-admin/entity/organization/user"
 	"bytes"
 	"crypto/des"
 	"crypto/md5"
-	"fmt"
-	log "github.com/sirupsen/logrus"
 	"encoding/hex"
 	"errors"
+	"fmt"
+	log "github.com/sirupsen/logrus"
 )
 
 func zeroUnPadding(origData []byte) []byte {
@@ -70,9 +69,9 @@ func Encrypt(text string, key []byte) (string, error) {
 	return hex.EncodeToString(out), nil
 }
 
-func GetPass(pass string) string  {
-	pass, err :=  Encrypt(pass, []byte(config.Get().DesKey))
-	if err != nil{
+func GetPass(pass string) string {
+	pass, err := Encrypt(pass, []byte(config.Get().DesKey))
+	if err != nil {
 		log.Error(err)
 		return ""
 	}
