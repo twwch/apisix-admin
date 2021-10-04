@@ -9,8 +9,8 @@ import (
 )
 
 func Init() {
-	host := "http://192.168.209.157:9080"
-	key := "edd1c9f034335f136f87ad84b625c8f112"
+	host := "http://10.20.111.110:80"
+	key := "edd1c9f034335f136f87ad84b625c8f1"
 	err := NewApiSixClient(host, key)
 	if err != nil {
 		panic(err)
@@ -25,9 +25,6 @@ func TestApisixClient_ListRoute(t *testing.T) {
 		log.Fatal(err)
 	}
 	fmt.Println(resp.Node, resp.Count)
-	for _, item := range resp.Node.Nodes{
-		GetApiSixClient().GetRoute().Delete(ctx, item.Value.Id)
-	}
 }
 
 func TestRoute_CreateRoute(t *testing.T) {
