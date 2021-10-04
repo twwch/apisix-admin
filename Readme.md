@@ -95,3 +95,5 @@ func log(err error) {
 {Containers:-1 Created:1623742259 ID:sha256:8a8d4c7f511b1157d381ae44fbbd0eb578a2be7378eccef278437427d322c7d7 Labels:map[maintainer:Apache Pulsar <dev@pulsar.apache.organization>] ParentID: RepoDigests:[apachepulsar/pulsar-dashboard@sha256:804b48eab9ed94f11666f0009ab7ffab2297372b00410e2a0098fec73dc638aa] RepoTags:[apachepulsar/pulsar-dashboard:latest] SharedSize:-1 Size:1397399020 VirtualSize:1397399020}
 {Containers:-1 Created:1537291564 ID:sha256:fd323a11901ef5c4d4d3f3adddba99a460cb22c78e2187a8eba46e7ca0b0d8f6 Labels:map[] ParentID: RepoDigests:[apachepulsar/pulsar@sha256:397b8915fa1e29e22af1a8805c34bab67b40ce1c6f44cc305ebda0deacf48ea4] RepoTags:[apachepulsar/pulsar:2.1.1-incubating] SharedSize:-1 Size:963831377 VirtualSize:963831377}
 ```
+
+apisix 安装：https://apisix.apache.org/zh/docs/apisix/install-dependencies#centos-7

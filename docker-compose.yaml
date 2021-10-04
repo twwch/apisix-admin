@@ -2,7 +2,6 @@ version: '3'
 
 services:
   apisix-admin:
-    # image: xxx
     build:
       context: ./
       dockerfile: Dockerfile
@@ -14,14 +13,7 @@ services:
       - ./apisix-admin:/app/apisix-admin
       - /etc/hosts:/etc/hosts
       - /etc/localtime:/etc/localtime
-    networks:
-      - net
+    command: ["-c", "/app/config/apisix-admin.toml"]
     ports:
-      - 9101:9001
-    privileged: true
-    user: root
-
-networks:
-  net:
-    external: false
+      - 9101:9002
 

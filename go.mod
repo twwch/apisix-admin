@@ -13,7 +13,7 @@ require (
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/cobra v1.2.1
 	github.com/spf13/viper v1.8.1
-	github.com/twwch/gin-sdk v0.0.7
+	github.com/twwch/gin-sdk v0.0.8-0.20211003110342-2a6eef3b5394
 	go.mongodb.org/mongo-driver v1.7.2
 	google.golang.org/grpc v1.40.0 // indirect
 	google.golang.org/protobuf v1.27.1
