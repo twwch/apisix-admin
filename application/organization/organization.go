@@ -1,14 +1,13 @@
 package organization
 
 import (
-	"apisix-admin/config"
 	"apisix-admin/domain/user"
 	entityUser "apisix-admin/entity/organization/user"
 	"apisix-admin/entity/organization/user/mongo"
 	"apisix-admin/utils/des"
 	"apisix-admin/utils/jwt"
 	"context"
-	log "github.com/sirupsen/logrus"
+	"errors"
 	"github.com/twwch/gin-sdk/middles"
 	"net/http"
 )
@@ -22,14 +21,14 @@ func NewOrganizationApplication() *OrganizationApplication {
 }
 
 func (app *OrganizationApplication) Login(ctx context.Context, req *entityUser.LoginReq) (resp *entityUser.LoginResp, err error) {
-	pass, err := des.Encrypt(req.Password, []byte(config.Get().DesKey))
-	if err != nil{
-		log.Error(err)
+	pass := des.GetPass(req.Password)
+	if pass == ""{
 		err = entityUser.LoginFailError
 		return
 	}
 	userTemp , err := app.userService.FindUserByPhoneOrEmail(ctx, req.Account, pass)
 	if err != nil{
+		err = errors.New("获取用户失败，用户账号或密码错误")
 		return
 	}
 	token, err := jwt.MakeToken(userTemp.UserId)

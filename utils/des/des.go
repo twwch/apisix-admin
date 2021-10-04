@@ -1,8 +1,13 @@
 package des
 
 import (
+	"apisix-admin/config"
+	entityUser "apisix-admin/entity/organization/user"
 	"bytes"
 	"crypto/des"
+	"crypto/md5"
+	"fmt"
+	log "github.com/sirupsen/logrus"
 	"encoding/hex"
 	"errors"
 )
@@ -63,4 +68,14 @@ func Encrypt(text string, key []byte) (string, error) {
 		dst = dst[bs:]
 	}
 	return hex.EncodeToString(out), nil
+}
+
+func GetPass(pass string) string  {
+	pass, err :=  Encrypt(pass, []byte(config.Get().DesKey))
+	if err != nil{
+		log.Error(err)
+		return ""
+	}
+	data := []byte(pass)
+	return fmt.Sprintf("%x", md5.Sum(data))
 }
